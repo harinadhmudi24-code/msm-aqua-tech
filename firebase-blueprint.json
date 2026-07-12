@@ -1,0 +1,161 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique identifier of the user"
+        },
+        "taxAccountBalance": {
+          "type": "number",
+          "description": "Running direct tax account balance"
+        }
+      },
+      "required": ["userId"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Post/item created by user",
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "string",
+          "description": "Unique identifier of the post"
+        },
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who owns the post"
+        },
+        "taxAmount": {
+          "type": "number",
+          "description": "Calculated tax amount"
+        },
+        "grossAmount": {
+          "type": "number",
+          "description": "Total gross transaction amount"
+        },
+        "netAmount": {
+          "type": "number",
+          "description": "Net amount (gross minus tax)"
+        },
+        "taxRate": {
+          "type": "number",
+          "description": "Tax rate percentage (e.g., 5, 12, 18)"
+        }
+      },
+      "required": ["postId", "userId"]
+    },
+    "AnalyticsLog": {
+      "title": "Analytics Log",
+      "description": "System or user interaction log",
+      "type": "object",
+      "properties": {
+        "logId": {
+          "type": "string",
+          "description": "Unique identifier of the log"
+        }
+      },
+      "required": ["logId"]
+    },
+    "TaxDeposit": {
+      "title": "Tax Deposit",
+      "description": "Immutable ledger receipt of tax credited to the user's account",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user receiving the credit"
+        },
+        "sourceTransactionId": {
+          "type": "string",
+          "description": "ID of the source transaction"
+        },
+        "taxCredited": {
+          "type": "number",
+          "description": "Amount of tax credited"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of when the deposit occurred"
+        }
+      },
+      "required": ["userId", "sourceTransactionId", "taxCredited"]
+    },
+    "AdminProfile": {
+      "title": "Admin Profile",
+      "description": "Global admin profile config and revenue tracking",
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "description": "ID of the admin profile"
+        },
+        "revenueBalance": {
+          "type": "number",
+          "description": "Real-time running admin revenue balance"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last update"
+        }
+      },
+      "required": ["adminId", "revenueBalance"]
+    },
+    "ScannedPayment": {
+      "title": "Scanned Payment",
+      "description": "Immutable record of a successfully scanned payment",
+      "type": "object",
+      "properties": {
+        "scannedByUserId": {
+          "type": "string",
+          "description": "ID of the user who scanned the payment"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Scanned payment amount"
+        },
+        "adminIdCredited": {
+          "type": "string",
+          "description": "ID of the admin profile credited"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of when the payment was scanned"
+        }
+      },
+      "required": ["scannedByUserId", "amount", "adminIdCredited"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles collection"
+    },
+    "posts/{postId}": {
+      "schema": "Post",
+      "description": "Posts collection"
+    },
+    "analytics/{logId}": {
+      "schema": "AnalyticsLog",
+      "description": "Analytics logs collection"
+    },
+    "tax_deposits/{depositId}": {
+      "schema": "TaxDeposit",
+      "description": "Immutable tax deposit receipts"
+    },
+    "system_config/{configId}": {
+      "schema": "AdminProfile",
+      "description": "System config settings including admin profile"
+    },
+    "scanned_payments/{paymentId}": {
+      "schema": "ScannedPayment",
+      "description": "Audited scanned payment receipts"
+    }
+  }
+}

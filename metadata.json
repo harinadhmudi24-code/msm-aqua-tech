@@ -1,0 +1,6 @@
+{
+  "name": "MSM Aqua Tech",
+  "description": "A specialized B2B and B2C marketplace for Vanamei and Tiger prawns, offering direct buyer-seller connection and custom rate controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
