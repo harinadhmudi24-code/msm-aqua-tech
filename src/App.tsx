@@ -94,6 +94,7 @@ export default function App() {
 
   // State controls
   const [showAddModal, setShowAddModal] = useState(false);
+  const [openModalAfterSignIn, setOpenModalAfterSignIn] = useState(false);
   const [activeContactListing, setActiveContactListing] = useState<PrawnListing | null>(null);
 
   // Sorting
@@ -151,6 +152,14 @@ export default function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  // Open modal after successful sign in if requested
+  useEffect(() => {
+    if (firebaseUser && openModalAfterSignIn) {
+      setShowAddModal(true);
+      setOpenModalAfterSignIn(false);
+    }
+  }, [firebaseUser, openModalAfterSignIn]);
 
   const handleSignIn = () => {
     setDbSyncLoading(true);
@@ -467,7 +476,14 @@ export default function App() {
             Buy Prawns
           </button>
           <button 
-            onClick={() => setShowAddModal(true)}
+            onClick={() => {
+              if (firebaseUser) {
+                setShowAddModal(true);
+              } else {
+                setOpenModalAfterSignIn(true);
+                handleSignIn();
+              }
+            }}
             className="text-white/80 hover:text-white transition-opacity font-semibold cursor-pointer"
           >
             Sell Prawns
